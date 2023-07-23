@@ -1,0 +1,921 @@
+--------------------
+- Revision History -
+--------------------
+v13.12 - 2021-12-30
+- Encoder input debounce now weighted 3x to ground.
+
+v13.12 - 2021-03-13
+- MIDI TX reg[31] is now 1 = not empty for timing purposes.
+- Minor UART RX & TX editing (up => down bit counters)
+
+v13.11 - 2021-03-11
+- 4x => 1x SPDIF register, do 4x writes, ready bit gone.
+- New MIDI TX register & pins.
+
+v13.10 - 2021-02-23
+- Changes to hive_pkg (8 bytes => 4):
+- CLT_SPAN : 'h3 =>`h2
+- IRQ_BASE : 'h40 => `h20
+- IRQ_SPAN : 'h3 => `h2
+- ENC_DEB_W : 14 => 16
+- Some GPIO pin reassignments.
+
+v13.09 - 2020-12-18
+- Changes to hive_pkg:
+- P_LC_Q & V_LC_Q: 200 => 100
+- P_FREQ_W & V_FREQ_W: 26 => 25
+- PV_RANGE_W: 4 => 3
+
+v13.08 - 2020-08-11
+- Reduced basic DPLL dither amplitude by factor of 4.
+- Removed DPLL external XOR option.
+
+v13.07 - 2020-07-29
+- Moved all DPLL params to hive_pkg.sv.
+- Moved hive_pkg.sv to top level dir. of version (to track different builds).
+
+v13.06 - 2019-07-14
+- Revamped / centralized all 48kHz timing with timing.sv.
+- Secondary 'H' SPDIF TX unit & register set support.
+
+v13.05 - 2019-06-28
+- Added "fast" anti-alias filters to the axes at the 2:1 sampling point.
+
+v13.05 - 2019-03-19
+- Added parameterized lower limit to LC DPLL: pdi_zq.sv and pdi_xor.sv.
+
+v13.05 - 2019-03-18
+- LED tuner interconnect is now dithered.
+
+v13.05 - 2019-03-16
+- Complete revamp of lc_dpll.sv including parameters.  Now uses triangle wave dither at freq input.
+
+v13.05 - 2019-03-11
+- Sped up spdif_tx.sv, removed input data shift.
+- Fixed synthesis timing bottleneck by presetting prescale count (to keep LSb from being shared with NCO div LSb).
+
+v13.05 - 2019-03-06
+- noise_mult.sv now outputs noise vector at cycle end rather than start (don't change @ edge).
+- noise_mult.sv now double differentiates noise vector.
+
+v13.05 - 2019-02-19
+- Added a variable dither strength parameter to the lc_dpll nco.
+
+v13.05 - 2019-02-14
+- Pitch & volume axes now use AFE2.
+- Removed special xor input pins for lc_dpll w/ AFE2.
+
+v13.05 - 2019-02-11
+- Rework of pd_inc.sv to accomodate AFE2.
+
+v13.05 - 2019-02-05
+- Added flags to error reg to indicate isr while in service.
+
+v13.05 - 2019-02-04
+- AA filters now sample every other clock (timing closure bottleneck).
+- AA filters now 4th order, -3dB @ 420Hz, independent of DPLL FREQ_W.
+- Swapped coils on pitch & vol axes:
+  - pitch: 685kHz, -3dB @ 266Hz.
+  - volume: 1042kHz, -3dB @ 365Hz.
+
+v13.05 - 2019-01-28
+- LED tuner is now completely serial (SW interface unchanged).
+- Upped encoder debounce counter width: 12 => 14.
+
+v13.05 - 2018-12-20
+- 2nd order CI removed from LC_DPLLs, replaced with 3x 1st order LPF.
+- 4x gpio_i brought out to Theremin top level pins, inverted sense, weak pullup.
+
+v13.04 - 2018-12-06
+- Changes to reflect new v13.04 core (reverse subtract; im AND, OR, XOR; opcode shuffle).
+
+v13.03 - 2018-10-27
+- Simplified noise_mult.sv & nco.sv.
+- Bug fix in nco.sv: was contactenating freq_i and LSV, now ORing them.
+- Upped encoder debounce counter width: 8 => 12.
+
+v13.02 - 2018-08-21
+- A bit of opcode shuffling (0x3- <=> 0x4-) for my foolish consistency hobgoblin.
+
+v13.01 - 2018-08-20
+- Updated verification file now passes.
+
+v13.01 - 2018-08-20
+- Flag assignment is now:
+  - modify for arithmetic
+  - pass-thru for logical
+  - clear for reg & mem & pc read
+
+v13.01 - 2018-08-18
+- Fixed mulitplier, passes verification.
+- New functions are unverified, however.
+
+v13.01 - 2018-08-17
+- Builds OK, unverified. Mulitplier is broken!
+- EP3C5E144C: ~3168 LEs, 191 MHz.
+
+v12.04 - 2018-08-16
+- Broken (working on new version).
+
+v12.04 - 2018-05-24
+- Added debounce.sv to encoder inputs (x16!), ENC_DEB_W=8 seems to fix things!
+- Changed volume side LC_DPLL params to give -3dB at ~134Hz:
+  ATTEN_W: 8 => 5
+  FREQ_W, DITH_W: 16 => 21
+
+v12.02 - 2018-01-16
+- Removed SPI register CS read bit.
+
+v12.02 - 2017-12-05
+- Added logic & pins for 2 more rotary encoders.
+
+v12.02 - 2017-11-24
+- Removed min/max feature in lc_dpll (unused).
+
+v12.02 - 2017-11-21
+- Added OP_ADD_*, OP_ORR_*, OP_XOR_* (8 & 16 im variants).
+- Removed OP_BRA, OP_BRO.
+- A bit of opcode reshuffling.
+- EP3C5E144C: ~3140 LEs, 189.3 MHz.
+- Passes verification & functional testing.
+
+v12.01 - 2017-11-13
+- Added OP_SWP (32 bit byte endian swap).
+- Removed OP_CPY_*, OP_GTO_*.
+- Slight opcode reshuffling.
+- EP3C5E144C: ~3028 LEs, 188.7 MHz.
+- Passes verification & functional testing.
+
+v11.11 - 2017-10-15
+- OP_MEM_#* IM now always byte offset (not scaled to access width). 
+- Added OP_MEM_I8*, OP_MEM_16*, OP_MEM_I16*.
+- Added OP_JSB, OP_JSB_8, OP_JSB_16.
+- Moved OP_LIT* to OP_MEM group.
+- Moved OP_PCR to OP_JMP etc. group.
+- Moved OP_JMP_8, OP_JMP_16, OP_JMP_24 to their own group.
+- Two operand conditional test select enumeration changed to remove gap.
+- Fixed missed renaming: OP_MEM_WL, OP_MEM_8WL => OP_MEM_WH, OP_MEM_8WH.
+- Renamed MEM_CTL_T struct: low => hlf
+- Removed IM_MEM_W parameter, set MEM_ADDR_W = PC_W.
+- EP3C5E144C: ~3036 LEs, 188.2 MHz.
+- Passes verification & functional testing.
+
+v11.10 - 2017-09-22
+- Added OP_SUB_R, OP_SUB_8R, OP_SUB_16R.
+- Removed OP_*_*US.
+- Slight opcode reshuffling.
+- bra, bro, brx back to returning 0,-1.
+- EP3C5E144C: ~3050 LEs, 192.5 MHz.
+- Passes verification & functional testing.
+
+v11.09 - 2017-09-13
+- Added OP_JMP_16, OP_JMP_24.
+- EP3C5E144C: ~3016 LEs, 192.7 MHz.
+- Passes verification & functional testing.
+
+v11.08 - 2017-09-12
+- Added OP_HLT (infinite loop).
+- Added IM jump conditionals: OP_JMP_#LU, OP_JMP_#NLU, OP_JMP_#O, OP_JMP_#NO.
+- IM jump ops renamed: _#LT, *_#NLT => *_#LS, *_#NLS.
+- EP3C5E144C: ~3020 LEs, 193.1 MHz.
+- Passes verification & functional testing.
+
+v11.07 - 2017-09-11
+- *_*SU is now *_*US.
+- Slight opcode reshuffling.
+- op_bra, op_bro, op_brx now return 0,1.
+
+v11.06 - 2017-09-10
+- General renaming (remove preference for signedness): 
+  - LOW_W => HLF_W.
+  - l => h.
+  - xsu => su.
+  - xu => u.
+  - x => s.
+
+v11.06 - 2017-09-03
+- General effort to increase the orthogonality of op encode / decode:
+  - Shuffled ops to make [8:B] im8, [C:F] im16.
+  - Expanded op_add_8 to op_add_8x, op_add_8xsu, op_add_8, op_add_8xu; did simlar to op_mul_8.
+  - Added op_sub_8x, op_sub_8xsu, op_sub_8, op_sub_8xu.
+- Need to update verification test file, old stuff passes.
+
+v11.05 - 2017-07-15
+- Separated hive_op_decode.sf into hive_op_control.sv and hive_op_data.sv.
+- Moved op_data into data_ring.
+- Moved rbus, reg_error, and reg_gpio into data_ring.
+- Moved conditional test logic from alu_add_sub to tst_decode.
+- Moved tst_decode into control_ring.
+- Severed gobs of ties between the control and data rings.
+- Removed Flag type from package.
+- EP3C5E144C: ~2971 LEs, 192.2 MHz.
+- Passes verification & functional testing.
+
+v11.04 - 2017-07-08
+- Added OP_CPY_L, OP_CPY_LU, OP_CPY_B, OP_CPY_BU, shuffled logic & misc functions a bit.
+- OP_PGC renamed to OP_PCR (PC Read).
+- EP3C5E144C: ~2931 LEs, 196.3 MHz.
+- Passes verification & functional testing.
+
+v11.03 - 2017-07-02
+- Restored OP_JMP_8 (too useful).
+- Removed OP_BRS (use OP_SHL_8 w/ im = -31).
+- Partially tested.
+
+v11.02 - 2017-06-20
+- Opcode operation decode is now via LSB: swapped opcode {sb,sa} and operation byte positions. 
+- New explicit OP_NOP which is the only 1 byte instruction.
+- Removed op_jmp_8 to make decode simpler (rash?).
+- All IM5 & IM6 ops are now IM8.
+- Conditional OP_GTO's are back.
+- Untested.
+
+v11.01 - 2017-05-27
+- Main memory is now byte addressed (little endian).
+- Untested.
+
+v10.17 - 2017-05-23
+- OP_MUL_8 back to OP_MUL_6.
+- Untested.
+
+v10.16 - 2017-05-23
+- Made all shifts outside the range [-32:31] produce 0.
+- Untested.
+
+v10.15 - 2017-05-22
+- Removed op_sat, op_sex, op_zex (they don't seem useful).
+- Moved op_lzc down.
+- EP3C5E144C: ~2769 LEs, 197.75 MHz.
+
+v10.14 - 2017-05-17
+- Added op_sat which saturates 6 bit signed value.
+
+v10.13 - 2017-05-04
+- Shuffled ops slightly so op_pop[0] is now nop.
+
+v10.12 - 2017-05-02
+- Interrupt service state is now readable via VECT reg [15:8].
+
+v10.11 - 2017-04-28
+- Default is now signed:
+  - op_mem_rl and op_mem_rb are now signed.
+  - op_lit_s => op_lit_l.
+  - op_shl_s => op_shl.
+  - op_shl_6s => op_shl_6.
+- Shuffled logical and arithmetic ops around a bit.
+- EP3C5E144C: ~2890 LEs, 199.3 MHz.
+- Passes verification & functional testing.
+
+v10.10 - 2017-04-26
+- Rotary encoder and pushbutton registers combined.
+- Rotary encoder decode is now ++ @ CW; -- @ CCW.
+- Pushbutton decode is now 1=pressed since last read.
+
+v10.09 - 2017-04-22
+- Removed opcodes: op_gto_z, op_gto_nz, op_gto_lz, op_gto_nlz.  
+- Removed opcodes: op_irt_z, op_irt_nz, op_irt_lz, op_irt_nlz.  
+- Moved op_jmp_16* opcodes to that hole.
+- New opcodes: op_mem_rl, op_mem_rb (unsigned) in that hole.
+- EP3C5E144C: ~2863 LEs, 196.1 MHz.
+- Passes verification & functional testing.
+
+v10.08 - 2017-04-18
+- Swapped XSR arm and disarm fields in VECT reg.
+
+v10.07 - 2017-04-17
+- Removed opcodes: op_clt, op_isr, op_xsa, op_xsd.
+- Put vector control back in rbus register, this time in version reg.
+- Vector and time regs integragted into to their code.
+- EP3C5E144C: ~2835 LEs, ~195 MHz.
+- Old and new functionality verifies OK.
+
+v10.06 - 2017-04-12
+- New opcodes: op_jmp_16*, new ALU flags to support (A?B) tests.
+- Most optional registering in ALU is now hard coded.
+- Pop logic back to stage 1 (no conditional PB).
+- Opcodes are now an enumerated type in package.
+- Old functionality verifies OK, new functionality untested.
+
+v10.05 - 2017-04-07
+- New opcodes: op_irt_z, op_irt_nz, op_irt_lz, op_irt_nlz.  
+- Lots of re-write in ALU and package, struct for ALU function select.
+- Low unsigned & signed extension moved to main mem.
+- Shuffled logic and arithmetic ops around a bit.
+- Moved pop logic to stage 4 to support conditional PB.
+- Added im16 logic & output from main mem for future use.
+- EP3C5E144C: ~2770 LEs, ~195 MHz.
+- Passes verification & functional testing.
+
+v10.03 - 2017-03-29
+- New opcodes: op_zex, op_sex, as well as immediate (IM5) versions of them.
+- Immediate multiply IM is now 8 bits (was 6).
+- Removed opcodes: op_cpy_u, op_cpy_s, op_mem_ru, op_mem_rs, op_mem_rbu, op_mem_rbs.
+- Renamed opcodes: op_mem_wu to op_mem_wl.
+- Memory access IM offsets are 3 bits.
+- Shuffled logic ops around a bit.
+- EP3C5E144C: 2760 LEs, 194.7 MHz.
+- Passes verification & functional testing.
+
+v10.02 - 2017-03-03
+- Bug fix in op decoder (wasn't shifting address for new opcodes).
+- EP3C5E144C: 2633 LEs, 193.4 MHz.
+- Passes verification (new memory tests) & functional testing.
+
+v10.01 - 2017-02-25
+- Removed opcode: op_mem_ru.
+- New opcode: op_mem_wb.
+- Major changes to main mem & sim to support byte lanes.
+- EP3C5E144C: 2646 LEs, 197 MHz.
+- Passes verification & functional testing.
+
+v09.11 - 2017-02-22
+- Removed opcodes: op_cpy_bu, op_cpy_bs.
+- New opcode: op_brs.
+- Shuffled logic ops around a bit.
+
+v09.10 - 2017-02-21
+- Simplified lc_dpll.sv parameters.
+
+v09.10 - 2017-01-30
+- Fixed lc_dpll.sv parameters, CIC output amplitude is now constant.
+
+v09.10 - 2017-01-29
+- Major simplification of opcode encode & decode logic.
+- EP3C5E144C: 2635 LEs, 200 MHz!
+- Passes verification & functional testing.
+
+v09.10 - 2017-01-14
+- Major re-work of lc_dpll.sv:
+  - Addition of variable depth ci_u.sv component.
+  - Explicit right shift attenuation of integrated phase error.
+  - Extensive parameterization; check these in Quartus by examining
+    Analysis & Synthesis | Parameter Settings by Entity Instance.
+  - Working like a champ with second order CIC in HW/SW!
+
+v09.10 - 2017-01-11
+- SPDIF clock * 32 is now used for the LC DPLLs and SPDIF.
+  the Hive core clock is now largely independent of Theremin logic.
+- Major re-work of spdif_tx.sv to get top speed higher, clock prescale.
+
+v09.10 - 2016-12-25
+- Fixed spdif register read (at top level).
+
+v09.10 - 2016-12-24
+- spdif_tx.sv component now has square pcm clock output for more 
+  proper crossing of clock domains (XSR source).
+
+v09.10 - 2016-12-23
+- Removed components lcd_buf.sv, uart_rx_buf.sv, uart_tx_buf.sv, 
+  buffering moved to hive register component.
+
+v09.10 - 2016-12-21
+- New component fifo_buf.sv automatically selects between fifo.sv 
+  and ss_buf.sv constructs based on parameterized options.
+
+v09.10 - 2016-12-20
+- Added ss_buf.sv option to LCD component: lcd_buf.sv.
+- New parameters in package for LCD & SPDIF.
+- Added ss_buf.sv to SPDIF regs for handshake, not ready bit readable.
+- Core clock PLL is now set to 180MHz.
+
+v09.09 - 2016-12-20
+- Yet one more UART rewrite.  All data buffering and handshake
+  logic moved to new component: ss_buf.sv.  This drastically
+  simplifies the UART core logic, and simplifies the register set
+  interface as well.
+
+v09.09 - 2016-12-15
+- IRQ return address now gets pushed to stack 7, rather than stack 0.
+- SPDIF PCM 48kHz clock now drives XSR[3:0] rather than XSR[7:4].
+- Raised core clock target to 185MHz.
+- Passes verification & functional testing.
+
+v09.08 - 2016-12-13
+- Separated UART reg into TX & RX regs, moved SPI register up one.
+- UART ready bits [31] in both, and are now 0=ready, 1=not ready.
+- Removed RX error bits (disconnected at core level).
+- Removed TX loopback bit. 
+- The above make UART TX byte write and RX byte read very clean 
+  (no need to filter other bits).
+- General re-write/clean-up of the UART interfaces (master/slave).
+- Some re-write of the FIFO interface.
+- New UART RX FIFO option (not instantiated).
+- New directories, one for each peripheral.
+- Mass replacement of '0 with 0.
+- EP3C5E144C: 2624 LEs, 193.7 MHz.
+- Passes verification & functional testing.
+
+v09.07 - 2016-12-05
+- New opcodes OP_CPY_BU and OP_CPY_BS.
+- EP3C5E144C: 2616 LEs, 195.6 MHz.
+
+v09.06 - 2016-08-30
+- Complete UART rewrite, now with FIFO buffering on TX side.
+- A bit of frittering around elsewhere.
+
+v09.05 - 2016-07-26
+- Revision history is now in CHANGELOG.txt (this file).
+- Moved RBUS reg GPIO 5=>3, SPI 6=>5 (address).
+- Put core & peripheral & top files in separate directories.
+- Put Quartus 9.2sp2 and 10.1sp1 project files in separate directories.
+- All RBUS register top entities are now *_reg.sv.
+- A bit of frittering around in the uart.
+- Moved time/id register to top of core.
+
+v09.04 - 2016-06-22
+- OP_MEM_*L now OP_MEM_*U (unsigned).
+- EP3C5E144C: 2501 LEs, 198.7 MHz.
+- Passes verification & functional testing.
+
+v09.04 - 2016-06-19
+- RBUS register address const rename: *_ADDR => RBUS_*
+
+v09.04 - 2016-06-17
+- OP_MEM_RS is now OP_MEM_RL (unsigned).
+- UART RX ready bit moved to reg [31] (MSb).
+- UART RX bad_buf, bad_start, bad stop bits made clear on read
+  and added to reg [30:28].
+- UART TX ready bit moved to reg [27].
+- SPI CSn bit moved to reg [8] and made readable.
+
+v09.03 - 2016-06-06
+- Finally testing UART, inserted read delay to make RX reg work.
+
+v09.03 - 2016-06-04
+- New SPI master component.
+- EP3C5E144C: 2503 LEs, 194.6 MHz.
+
+v09.02 - 2016-05-21
+- Integrated vector controller logic into core control ring.
+- New component: "hive_vector_unit.cpp".
+- New / different opcodes, all one-hot per-thread via im[7:0]:
+  - OP_CLT   : clear thread
+  - OP_ISR   : internal interrupt thread
+  - OP_XSA   : arm external interrupt thread
+  - OP_XSD   : disarm external interrupt thread
+- ISR is now non-maskable (XSR remains maskable).
+- Removed VECTOR rbus register, moved ERROR rbus register to address 2.
+- EP3C5E144C: 2449 LEs, 193.8 MHz.
+- Passes verification & functional testing.
+
+v09.01 - 2016-05-20
+- Moved JMP_8 decode to 0x00--.
+- Removed explicit NOP, instead use JMP_8 with IM8 = 0.
+- EP3C5E144C: 2451 LEs, 195.8 MHz.
+- Passes verification & functional testing.
+
+v08.14 - 2016-05-11
+- Mixed sign ops back to v8.10 way: *_US => *_SU
+- Opcode renaming: op_nsg => op_nsb (op_nsg too similar to op_sgn)
+- Passes verification & functional testing.
+- EP3C5E144C: 2450 LEs, 198.8 MHz.
+
+v08.13 - 2016-04-16
+- Extended signed results are back to the way they were.
+
+v08.12 - 2016-04-15
+- Removed OP_SKP_* and OP_SK2_* (add|subtract & test zero|sign instead).
+- Changed OP_*_SU to OP_*_US for simpler overflow / carry scenarios.
+  Extended +/- signed results now give +1 for overflow, -1 for underflow,
+  which is the same as carry in & carry out for extended unsigned.
+- OP_ADD_6 is back to OP_ADD_8.
+- Moved OP_SGN.
+- Shuffled opcodes around, blank IM6 width decode space is now above OP_REG.
+
+v08.11 - 2016-03-25
+- Added OP_SGN, new opcode that returns +/- 1 based on target sign.
+  Uses are: obtaining sign, performing absolute value, restoring sign.
+- Enabled ALU add/subtract and logic module output registering, 
+  broke up huge mux in stage 2 and moved parts to stage 3 to relieve timing.
+  PC is registered into stage 3, could be muxed in stage 2 if desired.
+  This has been a timing bottleneck forever, nice to finally address it.
+- Passes verification & functional testing.
+- EP3C5E144C: 2490 LEs, 198.7 MHz.
+
+v08.10 - 2016-02-29
+- Added OP_ADD_SU, OP_SUB_SU, OP_MUL_SU mixed signed & unsigned opcodes.
+- Broke up sgn decoding into low_s, sgn_a, sgn_b.
+- Shuffled opcodes to make unsigned first in terms of decoding.
+- OP_LIT_S was decoded a bit out of the norm, OK now.
+- Removed unnecessary signed flag set in OP_ADD_6 & OP_MUL_6 decode.
+- Passes verification & functional testing.
+- EP3C5E144C: 2467 LEs, 199.4 MHz.
+
+v08.09 - 2016-02-09
+- Shuffled opcodes a bit for consistency (all IM mult & shift @ 0xA).
+- Blank contiguous IM6 opcode space at [0x9C00:0x9FFF].
+- Passes verification & functional testing.
+- EP3C5E144C: 2488 LEs, 196.9 MHz.
+
+v08.08 - 2016-02-05
+- Moved ALU low sign/zero extension from stage 5 to stage 4 to relieve timing.
+- Moved all flag generation to alu_add_sub, FLG_T is the new type conduit.
+- Moved im | b select from data_ring to alu_top (no change in logic).
+- Moved im | b select from control_ring to pc_ring (no change in logic).
+- Simplified alu_mult_shift input case statement.
+- Converted shp_6u to shl_6u (simple shift left unsigned w/o pow).
+- Reduced IM size of add_8 to 6 bits, which made room for mul_6, rol_5, pow_5.
+- mul_6 with im := -1 gives arithmetic negation.
+- There is a im6 sized unused "hole" in opcode space at [0xA400:0xA7FF].
+- Opcode renaming: op_bnh => op_nsg.
+- Exchanged pow and rol opcode locations.
+- EP3C5E144C: 2450 LEs, 196 MHz.
+- Untested.
+
+v08.07 - 2015-12-04
+- Added rotate left opcode ROL: sA <<= sB (rot).
+- Employs unsigned shift left logic and normal|extended mult results ORing @ mux.
+- Passes verification & functional testing.
+- EP3C5E144C: 2482 LEs, 196 MHz (~2% LE increase, no speed impact).
+
+v08.06 - 2015-09-04
+- Fixed SKP & SK2 odd test opcodes flagging errors.
+- Passes new verification & functional testing.
+- EP3C5E144C: 2420 LEs, 194.1 MHz.
+
+v08.06 - 2015-08-26
+- Opcode renaming: 
+  - op_pop_8 => op_pop
+  - op_cls_8 => op_cls
+  - op_mem_4* => op_mem_*
+  - op_reg_6* => op_reg_*
+  - op_dat_8* => op_byt
+
+v08.05 - 2015-08-24
+- Opcode renaming: 
+  - op_mem_4rls => op_mem_4rs
+  - op_lit_ls => op_lit_s
+  - op_lit_lu => op_lit_u
+  - op_cpy_ls => op_cpy_s
+  - op_cpy_lu => op_cpy_u
+
+v08.04 - 2015-08-22
+- Added A odd tests to SKP & SK2 opcodes.
+
+v08.03 - 2015-07-24
+- Swapped locations of op_dat_8 and op_add_8.
+- Opcode decoding is now purely nested case statements.
+- Opcode renaming: 
+  - op_*_xu => op_*_u
+  - op_*_xs => op_*_s
+
+v08.03 - 2015-07-21
+- Fixed horrific bug that goes all the way back to v06.01:
+  - Copy path through the ALU not specified for op_dat immediate data!
+- op_sk2 (A?B) opcodes are back, op_skp name unchanged.
+- Shuffled opcodes, removed opcode type CODE_T, streamlined default decoding.
+- No significan blank contiguous opcode space.
+- Opcode renaming: op_nsb => op_bnh.
+- Added a bit of buffering to baud clock to ease UART timing.
+
+v08.02 - 2015-07-14
+- Removed op_sk2 (A?B) opcodes, op_sk1 is now op_skp.
+- Added jmp_8 unconditional jump opcode.
+- Blank contiguous opcode space 0x7000 : 0x7fff.
+- Opcode renaming: 
+  - op_pus_6 => op_shp_6u.
+  - op_dat_8s => op_dat_8.
+  - op_add_8s => op_add_8.
+
+v08.01 - 2015-07-13
+- Removed op_jmp_4 (A?B) opcodes - hogging too much opcode space.
+- Added op_sk1 and op_sk2 (A?B) opcodes.
+- op_jmp_6s, op_dat_6s, and op_add_6s are now *_8s.
+- Removed redundant PC+1 & PC+2 lit logic.
+- Shuffled opcodes.
+
+v07.02 - 2015-06-16
+- Bit reduction opcodes now return 1/0 rather than -1/0 (more useful?).
+- Added conditional (A?0) GTO opcodes.  (Need to add bootcode tests!)
+- Fixed horrific bug that goes all the way back to v05.03:
+  - AB Pops not inhibited during decode of IRQ cycle!
+- Pop default decode is now don't pop (for clarity).
+- Signal renaming: 
+  - isr/ISR => irq/IRQ, push/PUSH => psh/PSH.
+  - pop_i/o => pop_im_i/o.
+  - cls_i/o => cls_im_i/o.
+- Opcode rename: nsg => nsb
+- Untested.
+
+v07.01 - 2015-04-21
+- Welcome to the new top level, hive_top.sv.
+- The core has the version, time, vector, and error registers,
+  the top level contains the UART and GPIO registers.
+- The core port now sports the RBUS master interface.
+- Added parameter MEM_ROM_W to protect ROM area in low main memory.
+- Added parameter XSR_LIVE_MASK to enable / disable XSR inputs.
+- Moved remaining trivial registering of RBUS bridge to the data ring.
+- Components removed: hive_reg_set.sv.
+- Components renamed: hive_reg_base.sv => hive_base_reg.sv.
+- Register descriptions now in hive_rbus_regs.txt.
+- Untested.
+
+v06.10 - 2015-04-13
+- MEM_IM_W is now 5, moved *2 shift for 32 bit access address
+  offset into op_decode.
+- Simplified & sped up boot code interpretation & initializaion.
+- New global parameter: MEM_DEPTH.
+- rst_bridge sync depth back to SYNC_W.
+- Played with async reset removal - doesn't use that many resources,
+  doesn't really impact top speed, and useful for sim, so keeping it.
+- EP3C5E144C: 2463 LEs, 196.4MHz
+- Passes all boot code verification & functional tests.
+
+v06.09 - 2015-04-12
+- ISR servicing state moved back to vectoring logic which 
+  minimizes pipeline registering between it and the register set.
+  This logic is now a single register deep.
+- Removed thread clear events from error register.  Cleared
+  threads can report this through some other mechanism if needed.
+- New component: hive_in_cond.sv to handle XSR & register set 
+  input conditioning (identical functionality).
+- Fixed bug regarding register set input data edge detection 
+  option masks (mask vectors weren't indexed).
+- Functions lzc and flip now use ALU_W (rather than fixed 32).
+- Renamed global params: 
+  - ALU_LOW_W => LOW_W
+  - CLR_BASE => CLT_BASE
+  - CLR_SPAN => CLT_SPAN
+- Promoted local params to global: ZSX_W, DBL_W
+- Removed DATA_W parameter in alu_multiply.sv, now using ZSX_W.
+- Reorged/renamed dp_ram_dual.sv => ram_dp_dual.sv.
+- Reorged/renamed dq_ram.sv => ram_dq.sv.
+- +1 stage in hive_rst_bridge.sv.
+- A bit of mucking about with op decode reset values.
+- EP3C5E144C: 2487 LEs, 200MHz!
+- Passes all boot code verification & functional tests.
+
+v06.08 - 2015-03-29
+- Removed input registers @ ALU top, now using those in the 
+  subcomponents which should synthesize equivalently.
+- Made pc_im in op_decode PC_W wide to make selection in the 
+  PC control ring less weird looking, did the same for alu_im
+  in the data ring and for the same reason.  No synthesis impact.
+- Global parameters PC_IM_W and ALU_IM_W removed.
+- EP3C5E144C: 2488 LEs, 195.7MHz.
+- Passes all boot code verification & functional tests.
+
+v06.07 - 2015-03-27
+- Changes to register base and set logic:
+  - 3 register pipe through the set rather than 2.
+  - OUT_MODE is now RD_MODE.
+  - COW1 mode moved to write side logic.
+  - Separate live bit masks for read and write sides.
+  - Global SYNC_W parameter used for optional resync of inputs.
+- EP3C5E144C: ~2500 LEs, ~195MHz.
+- Passes all boot code verification & functional tests.
+
+v06.06 - 2015-03-21
+- Vectoring:
+  - Back to single register control in register set.
+  - Removed individual tracking of ISR / XSR (no point).
+  - Current ISR servicing state now maintained in op decoder.
+  - ISR state machines gone due to simplifications.
+  - All feed-forward.
+- Register set now distributed rather than in one component,
+  which makes the design more modular.  "RBUS" is the internal bus.
+- Time, vectoring, UART, GPIO, and error now have internal register set 
+  registers, GPIO & error are now separate components.
+- Eliminated MSB linter pruning warnings in hive_alu_multiply.sv.
+- Signal rename: clr_i => cla_i.
+- A few parameters added to package.
+- EP3C5E144C: ~2570 LEs, ~195MHz.
+- Passes all boot code verification & functional tests.
+
+v06.05 - 2015-03-16
+- Edited main_mem to give 32 bit offset w/ 32 bit access.
+- Vectoring:
+  - State machine now differentiates between ISR & XSR.
+  - Vector register 1 now reads XSR status rather than clearing status.
+  - Moved vector pipe component from register set to control ring.
+  - Shuffled vector register 0 bits.
+- Moved stack push binary=>one-hot 1 stage earlier for registering.
+- EP3C5E144C: ~2650 LEs, ~195MHz using:
+  - Placement Effort Multiplier = 2
+  - Router Effort Multiplier = 2
+  - Router Timing Optimization Level = max
+- Passes all boot code verification & functional tests.
+
+v06.04 - 2015-03-13
+- Opcode immediates separated out to eliminate re-encoding/decoding.
+- Moved cls and pop decoding to data_ring | stacks stage 0 for speedup.
+- New parameters:
+  - ALU_LOW_W (=ALU_W>>1)
+  - ALU_IM_W
+  - PC_IM_W
+  - MEM_IM_W
+- Removed parameters:
+  - TIME_W (=ALU_W).
+- Renamed parameters:
+  - STK* => STK_*
+  - STACKS_W => STK_W
+  - ID_W => THD_W
+- EP3C5E144C: ~2600 LEs, ~195MHz using:
+  - Placement Effort Multiplier = 4
+  - Router Timing Optimization Level = max
+- Passes all boot code verification & functional tests.
+  
+v06.04 - 2015-03-05
+- Removed most interstage feedback, now almost competely feedforward:
+  - Push stack selector encoded binary w/ enable rather than one-hot.
+  - Stack push moved to stage 5.
+  - Stack errors pipelined to next cycle @ stage 0.
+  - Opcode error and thread clear reporting @ stage 0.
+- File edit & rename:
+  - hive_stack_level => hive_level_ring
+  - hive_stack_pipe => hive_stack_ring
+  - hive_stack_ring => hive_stacks
+- EP3C5E144C: ~2613 LEs, ~195MHz (using DSE).
+- Passes all boot code verification & functional tests.
+
+v06.03 - 2015-02-27
+- Revamped vectoring (clear, ISR, XSR) and initialization (async reset):
+  - Now fully pipelined and conceptually simpler WRT thread timing.
+  - Vectoring control logic now straddles stages 2 & 3 (post regs out).
+  - Separate masks for internal (ISR) and external (XSR) service requests.
+  - Arm / disarm X/ISR states separated from state machines.
+  - Thread X/ISR & clear current status brought to the register set.
+  - Error register now indicates thread clearing history.
+  - Single vector register expanded to two, register space juggled.
+  - Added rst_bridge.sv for async assert / sync de-assert of reset.
+  - Added clr_i to top level - clear all threads, active high.
+  - PC async reset init values now correctly assigned.
+  - ID & PC clear / reset values now typed parameters in hive_rst_vals package.
+- Edited stack error and opcode error reporting logic, all do so at stage 3.
+- Removed stack ring external level I/O & feedback.
+- Swapped sense of WAR & RAW: "Write And Read" & "Read And Write".
+- File major edit & rename:
+  - hive_vector_sm.sv => hive_vector_ctl.sv.
+  - hive_vector.sv => hive_vector_pipe.sv.
+- Signal & state rename:
+  - clr* => clt* (clear thread)
+- Opcode rename:
+  - rtn => irt (to make clear it is not for subroutines)
+  - isg => nsg (to differentiate from irt)
+- Other misc. minor style edits here and there.
+- EP3C5E144C: ~2650 LEs, ~195MHz (using DSE).
+- Passes all boot code verification & functional tests.
+
+v06.02 - 2014-12-24
+- Minor style edits to UART, DDS baud rate generator replaced with
+  more generic component ramp_tri_sq.sv.
+- Prepended "hive_" to UART component names.
+- Minor style edits to hive_vector_sm.sv.
+- Entity renaming: 
+  - hive_vector_ctrl.sv => hive_vector.sv
+- New / different opcodes:
+  - cls_8 : clear[7:0] none/one/some/all stacks
+- Opcode renaming:
+  - pcp => pgc
+  - pop => pop_8
+  - all *_i* now have immediate width in place of 'i' 
+    e.g. op_jmp_inls => op_jmp_4nls
+
+v06.01 - 2014-07-13 - PUBLIC RELEASE -
+- Major changes in hive_main_mem.sv to support 16 & 32 bit 
+  aligned and unaligned access for literals and memory R/W.
+- Main memory BRAM now a dual entity to provide separate addressing
+  of high and low and to circumvent bootcode init issues.
+- R/W immediate field offset is based on 16 bit access.
+- New / different opcodes:
+  - cpy_ls   : 16 bit copy low signed
+  - cpy_lu   : 16 bit copy low unsigned
+  - lit      : 32 bit literal 
+  - lit_ls   : 16 bit literal low signed
+  - lit_lu   : 16 bit literal low unsigned
+  - mem_ir   : 32 bit memory read
+  - mem_irls : 16 bit mememory read low signed
+  - mem_iw   : 32 bit mememory write
+  - mem_iwl  : 16 bit memory write low
+- Some juggling of opcode order to hopefully ease decode.
+- hive_alu_logical.sv rearranged a bit, removed a and default paths.
+- Passes all boot code verification & functional tests.
+
+v05.04 - 2014-06-13 - PUBLIC RELEASE -
+- SystemVerilog!  Many edits to take advantage of SV language constructs.
+  - All functions, parameters, defines, types, etc. are now in hive_pkg.sv.
+  - If synthesis fails position package first in project list.
+- Parameter renaming:
+  - LEVEL_W => STKLVL_W
+  - POINTER_W => STKPTR_W
+  - UART_BAUD_RATE => UART_BAUD
+  - BAUD_RATE => BAUD
+  - TIME_ID_ADDR => TIME_A
+  - All reg addresses => *_A
+- File renaming:
+  - All hive specific modules are now named hive_*.sv.
+- Pointer to boot code file is in dp_ram_infer.sv:
+  - ex: `include "boot_code\boot_code_v_alu.sv"
+- Passes all boot code verification & functional tests.
+
+v05.03 - 2014-06-07 - PUBLIC RELEASE -
+- Register access now uses immediate for address, up to 64 regs supported.
+- Bypass path for A added to alu_logical.v, decoded via an unused lg value.
+- Rewrite of op_decode.v to simplify decode.
+- Passes all boot code verification & functional tests.
+
+v05.02 - 2014-05-26
+- Parameter renaming:
+  - DATA_W => ALU_W
+  - ACCESS_W => CODE_W
+  - STK_W => STACKS_W
+  - DM_OFFS_W = MEM_IM_W
+  - ADDR_W => PC_W & MEM_ADDR_W
+- PC_W and MEM_ADDR_W now somewhat independent, though the user 
+  should ensure that PC_W >= MEM_ADDR_W.
+- VER_W removed.
+- A bit of cleanup here and there.
+
+v05.01 - 2014-05-20
+- Rewrite / edit / reorg of modules to facilitate verification.
+- Major changes to interrupt functionality:
+  - Interrupts now automatically disarmed during ISR and rearmed @ return.
+  - New op_rtn instruction to support auto ISR disarm / rearm.
+  - ISR register set arm / disarm now s/b safe w/ multiple access.
+- Register set access is now 32 bits wide (to support coprocessors & such).
+- Expanded ID register to Time/ID (32 vs. 3 bits).
+- Combined RX & TX UART registers.
+- Combined HI & LO I/O registers.
+- Combined interrupt and clear registers.
+- Version width generalized (and VER register fixed).
+- Register set component moved two pipe stages earlier.
+- Integrated main memory into former reg_mem_shim component.
+- MEM_DATA_W is now ACCESS_W.
+- ADDR_W now applies to ALL addresses, including PCs and such.
+- Changed op_lit_h to use B[lo] rather than A[lo] as input.
+- Simplified lzc_32 function a bit to make it more uniform.
+- Now compiles in XST 14.7 (but not BRAM boot code?)
+- Passes all boot code verification & functional tests.
+
+v04.06 - 2014-01-28
+- Fixed pop typo in boot_code_exp2.h
+- Fixed trailing comma typo in alu_logical.v
+- Op renaming:
+    psu_i => pus_i
+    pcn => pcp
+    nsg => isg
+
+v04.05 - 2014-01-02 - PUBLIC RELEASE -
+- Note main version jump.
+- Forked design back into main line.
+- OP_CODE_W is now MEM_DATA_W.
+
+v01.04 - 2014-01-01
+- Moved register set and main memory data port one pipeline stage later.
+- op_pow is back and is now sign neutral.
+- Op renaming: psh_iu => psu_i.
+- `_0, `_1, etc. is now `s* in all boot code.
+- Added header blocking statements to some *.h files (didn't work for all).
+- Use of real rather than integer types in UART calculations for clarity.
+- EP3C5E144C: 2662 LEs, 198MHz (w/o DSE, synthesis optimized for speed).
+- Passes all boot code verification & functional tests.
+
+v01.03 - 2013-12-23
+- Short 4 bit (+7/-8) immediate (A?B) jumps have replaced all following jumps.
+- Removed unconditional immediate jump (use op_jmp_ie).
+- Immediate (A?0) jumps, data, and add IM value reduced to 6 bits.
+- Removed op_pow_i, op_shl_iu is op_psh_iu: combo pow2 and right shift, 
+  op_shl_u is strictly unsigned shift.
+- UART added to register set.
+- Op renaming:
+    dat_f* => lit_*
+    shl_iu => psh_iu
+- Small changes to register set base component parameters & I/O.
+- Opcode encode/decode now over full opcode width.
+- EP3C5E144C: 2650 LEs, 189MHz (w/o DSE).
+- Passes all boot code verification & functional tests.
+
+v01.02 - 2013-12-06
+- Following jumps (jmp_f) have replaced all skips.
+- Added op_pow & op_pow_i opcodes.
+- A odd testing removed (lack of opcode space).
+- op_pop now covers all stacks at once via {pb, sb, pa, sa} binary field.
+- op_reg_r now signed, added read and write high register ops (_wh is ~free).
+- Added op_lit_u to accomodate 16 bit addresses & such.
+- Op renaming:
+    lit => dat_f
+    byt => dat_i
+    *_sx => *_xs
+    *_ux => *_xu
+- Moved PC interrupt & jmp_f address loads to stage 4 of PC pipe.
+- op_dat_fh now uses A as source of low data rather than B,
+  which is more consistent and allows unrelated pop.
+- Register set addresses now defined as 8 bits wide.
+- EP3C5E144C: ~2500 LEs, 185MHz (w/o DSE).
+- Passes all boot code verification tests.
+- Passes boot code functional tests: divide, sqrt, log2, exp2.
+
+v01.01 - 2013-11-19
+- Born.  Based on Hive v3.10.  Has 8 stacks per thread.
+- Skips are back for A odd and (A?B) testing.
+- Removed op_cls as it seems too dangerous.  May put back in register set.
+- Lots of op renaming: 
+    dat_f => lit
+    dat_i => byt
+    or_br => bro, etc.
+    or => orr
+    pc => pgc (to make all op bases 3 letters)
+- Reg access now unsigned low with no immediate offset.
+- Added register to flag decode output, moved all PC changes to stage 3.
+- EP3C5E144C: ~2400 LEs, 178MHz (w/o DSE).
+- BROKEN: reg_mem_shim.v has bad decoding for dmem addr.

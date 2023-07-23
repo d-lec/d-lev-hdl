@@ -1,6 +1,6 @@
 # d-lev-hdl
-This is a source mirror of the SystemVerilog source code for the D-Lev processor.
-Original documentation is currently located in:
+This is a source mirror of the SystemVerilog source code for the D-Lev processor.  
+Original documentation is currently located in:  
 `README.txt` (sorry, lol)  
 `REGS.txt`  
 `CHANGE_LOG.txt`  
@@ -11,4 +11,5 @@ For quick reference, the specific part number used on the original D-Lev is a Cy
 Note that the `.mif` files included in this repository are Hive bytecode generated from [d-lev-software](https://github.com/d-lec/d-lev-software).
 
 # Repo conventions
-"Original text" for this repo can be found at http://d-lev.com/source/d-lev_fpga_source_[RELEASE_DATE_YYYY-MM-DD].zip. When mirroring an update from the official D-Lev website, please make a "git tag" corresponding to the release date, and upload the original zip file from the website to the Releases page.
+"Original text" for this repo can be found at http://d-lev.com/source/d-lev_fpga_source_[RELEASE_DATE_YYYY-MM-DD].zip. When mirroring an update from the official D-Lev website, please make a "git tag" corresponding to the release date, and upload the original zip file from the website to the Releases page.  
+The `.gitignore` for this repo may be a bit overzealous. Quartus spits out a lot of build artifacts and log files, and I've tried to exclude many as possible.

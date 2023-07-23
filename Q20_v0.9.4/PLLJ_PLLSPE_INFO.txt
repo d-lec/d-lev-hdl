@@ -1,0 +1,10 @@
+PLL_Name	pll_core:pll_core|altpll:altpll_component|pll_core_altpll:auto_generated|pll1
+PLLJITTER	49
+PLLSPEmax	84
+PLLSPEmin	-53
+
+PLL_Name	pll_spdif:pll_spdif|altpll:altpll_component|pll_spdif_altpll:auto_generated|pll1
+PLLJITTER	27
+PLLSPEmax	84
+PLLSPEmin	-53
+

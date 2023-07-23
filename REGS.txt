@@ -1,0 +1,234 @@
+--------------------------------------------------------------------------------
+
+MINIMUM:
+- 0x00 : VECT
+- 0x01 : TIME
+- 0x02 : ERROR
+- 0x03 : GPIO
+EXTENDED:
+- 0x04 : UART_TX
+- 0x05 : UART_RX
+- 0x06 : SPI
+- 0x07 : -EMPTY-
+THEREMIN:
+- 0x08 : SPDIF
+- 0x09 : MIDI
+- 0x0A : PITCH
+- 0x0B : VOLUME
+- 0x0C : TUNER
+- 0x0D : LCD
+- 0x0E : ENC
+- 0x0F : -EMPTY-
+
+================================================================================
+- 0x00 : VECT
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+[31:24]  clt_req[7:0]         write 1 request thread clear, read ver[15:8]
+[23:16]  isr_req[7:0]         write 1 request thread ISR, read ver[7:0]
+[15:08]  xsr_dis[7:0]         write 1 thread XSR disarm, read service status
+[07:00]  xsr_arm[7:0]         write 1 thread XSR arm, read arm status
+
+Notes:
+- Per thread XSR arm & disarm.
+- Per thread ISR (non-maskable).
+- Per thread clear (non-maskable).
+- Set on write one radio buttons for XSR arm / disarm.
+- Clear takes precedence over ISR:
+  - e.g. write 0xFFFFFFFF clears all threads.
+- Disarm takes precedence over XSR arm:
+  - e.g. write 0x0000FFFF disarms all XSRs for all threads.
+- Thread must be armed before XSR can be issued.
+- Thread XSRs disarmed @ associated thread clear and async reset.
+- ISR/XSR ignored during interrupt servicing until op_irt encountered.
+
+================================================================================
+- 0x01 : TIME
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+[31:00]  time[31:0]           time
+
+Notes: 
+- Read-only.
+- Up-count @ core clock rising edges.
+- Threads can read this for relative time.
+- Threads can read this & mask off time[2:0] for thread ID.
+
+================================================================================
+- 0x02 : ERROR
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+[31:24]  irq_er[7:0]          1=interrupt miss; 0=OK
+[23:16]  op_er[7:0]           1=opcode error; 0=OK
+[15:08]  push_er[7:0]         1=lifo push when full; 0=OK
+[07:00]  pop_er[7:0]          1=lifo pop when empty; 0=OK
+
+Notes:
+- Clear on write one.
+- Per thread error reporting.
+- All bits cleared @ async reset.
+
+================================================================================
+- 0x03 : GPIO
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+[31:00]  gpio[31:0]           I/O data
+
+Notes: 
+- Separate read / write of I/O data.
+
+================================================================================
+- 0x04 : UART_TX
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+   [31]  tx_full              1=buffer is full; 0=buffer can take data
+[30:08]  -                    0
+[07:00]  tx_data[7:0]         write TX UART data buffer
+
+Notes: 
+- Writes to this register push data to the TX UART data buffer.
+- Full bit is self clearing.
+
+================================================================================
+- 0x05 : UART_RX
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+   [31]  rx_empty             1=buffer is empty; 0=buffer has data
+[30:08]  -                    0
+[07:00]  data[7:0]            read RX UART data buffer
+
+Notes: 
+- Reads from this register pop data from the RX UART data buffer.
+- Empty bit is self clearing.
+
+================================================================================
+- 0x06 : SPI
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+   [31]  busy                 read busy
+[30:09]  -                    0
+   [08]  csn                  write chip select, active low
+[07:00]  spi_data[7:0]        read & write SPI data
+
+Notes: 
+- Initiate SPI bus cycle by writing data with csn bit low.
+- Continue SPI bus cycle by writing data with csn bit low.
+- Terminate SPI bus cycle by writing csn bit high.
+- Read & Write new data when not busy.
+
+================================================================================
+- 0x07 : -EMPTY-
+================================================================================
+- 0x08 : SPDIF
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+[31:24]  -                    0
+[23:00]  pcm[23:0]            write spdif data
+
+Notes: 
+- Write order: L[0], R[0], L[1], R[1].
+
+================================================================================
+- 0x09 : MIDI
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+   [31]  tx_not_empty         1=buffer is not empty; 0=buffer is empty
+[30:08]  -                    0
+[07:00]  tx_data[7:0]         write TX MIDI data buffer
+
+Notes: 
+- Writes to this register push data to the TX MIDI data buffer.
+- Not empty bit is self clearing.
+
+================================================================================
+- 0x0A : PITCH
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+[31:00]  data[31:0]           read pitch[31:0]
+[02:00]  dith[2:0]            write dither[2:0]
+
+================================================================================
+- 0x0B : VOLUME
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+[31:00]  data[31:0]           read volume[31:0]
+[02:00]  dith[2:0]            write dither[2:0]
+
+================================================================================
+- 0x0C : TUNER
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+   [31]  busy                 read busy
+[30:25]  -                    0
+   [24]  mode                 write mode
+[23:00]  data[23:0]           write data[23:0]
+
+Notes: 
+- Mode bit is for special (command) mode, active high.
+- Busy bit is self-clearing @ data taken.
+
+================================================================================
+- 0x0D : LCD
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+   [31]  lcd_full             1=buffer is full; 0=buffer can take data
+[30:09]  -                    0
+   [08]  rsn                  write rsn
+[07:00]  data[7:0]            write data[7:0]
+
+Notes: 
+- For rsn: 0=data|addr; 1=command
+- Full bit is self-clearing.
+- All commands are internally self-timed.
+
+================================================================================
+- 0x0E : ENC
+--------------------------------------------------------------------------------
+
+   bits  name                 description
+   ----  ----                 -----------
+[31:24]  -                    0
+[23:16]  pb[7:0]              pushbuttons
+[15:14]  enc_7[1:0]           encoder 7
+[13:12]  enc_6[1:0]           encoder 6
+[11:10]  enc_5[1:0]           encoder 5
+[09:08]  enc_4[1:0]           encoder 4
+[07:06]  enc_3[1:0]           encoder 3
+[05:04]  enc_2[1:0]           encoder 2
+[03:02]  enc_1[1:0]           encoder 1
+[01:00]  enc_0[1:0]           encoder 0
+
+Notes: 
+- enc: ++ @ CW; -- @ CCW.
+- pb: is/was pressed=1.
+- All bits are clear on read.
+
+================================================================================
+- 0x0F : -EMPTY-
+================================================================================

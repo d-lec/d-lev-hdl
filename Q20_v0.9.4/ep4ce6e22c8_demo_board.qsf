@@ -1,0 +1,281 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 1991-2011 Altera Corporation
+# Your use of Altera Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Altera Program License 
+# Subscription Agreement, Altera MegaCore Function License 
+# Agreement, or other applicable license agreement, including, 
+# without limitation, that your use is for the sole purpose of 
+# programming logic devices manufactured by Altera and sold by 
+# Altera or its authorized distributors.  Please refer to the 
+# applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus II
+# Version 11.0 Build 157 04/27/2011 SJ Full Version
+# Date created = 17:14:01  April 10, 2012
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		LED_4_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus II software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+# D_Lev Notes:
+# 
+# 1) This file reflects the new pin assignments applicable only to v0.9.4 and later
+# MAIN FPGA pcb layouts, unless superseded.
+#
+# 2) A few pin assignments do not have intuitive names:  
+# PIN_101 -to gpio_o[0] is the MUTE LED, active low (was STO_LED, pin 74 for 0.9.3!)
+# PIN_99 -to gpio_o[1] is the LCD backlite PWM, active high
+# PIN_104 -to gpio_o[2] is AUX
+# PIN_28 -to gpio_o[3] is AUX
+#
+# PIN_127 -to gpio_i[0] is MUTE switch, active low
+# PIN_121 -to gpio_i[1] is ACAL switch, active low
+# PIN_132 -to gpio_i[2] is AUX
+# PIN_135 -to gpio_i[3] is AUX
+#
+# -------------------------------------------------------------------------- #
+set_global_assignment -name FAMILY "Cyclone IV E"
+set_global_assignment -name DEVICE EP4CE6E22C8
+set_global_assignment -name TOP_LEVEL_ENTITY ep4ce6e22c8_demo_board
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 11.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "17:14:01  APRIL 10, 2012"
+set_global_assignment -name LAST_QUARTUS_VERSION "20.1.0 Lite Edition"
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name DEVICE_FILTER_PIN_COUNT 144
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
+set_location_assignment PIN_124 -to uart_tx_o
+set_location_assignment PIN_120 -to uart_rx_i
+set_location_assignment PIN_3 -to led_o[0]
+set_location_assignment PIN_7 -to led_o[1]
+set_location_assignment PIN_10 -to led_o[2]
+set_location_assignment PIN_11 -to led_o[3]
+set_location_assignment PIN_128 -to spdif_tx_o
+set_location_assignment PIN_137 -to spi_scs_o
+set_location_assignment PIN_1 -to spi_scl_o
+set_location_assignment PIN_143 -to spi_sdo_o
+set_location_assignment PIN_141 -to spi_sdi_i
+set_location_assignment PIN_85 -to lcd_e_o
+set_location_assignment PIN_87 -to lcd_rs_o
+set_location_assignment PIN_73 -to lcd_data_o[0]
+set_location_assignment PIN_83 -to lcd_data_o[1]
+set_location_assignment PIN_75 -to lcd_data_o[2]
+set_location_assignment PIN_77 -to lcd_data_o[3]
+set_location_assignment PIN_113 -to tuner_oe_o
+set_location_assignment PIN_111 -to tuner_le_o
+set_location_assignment PIN_106 -to tuner_scl_o
+set_location_assignment PIN_115 -to tuner_sda_o
+set_location_assignment PIN_50 -to volume_sq_o
+set_location_assignment PIN_52 -to volume_zero_i
+set_location_assignment PIN_46 -to volume_quad_i
+set_location_assignment PIN_66 -to pitch_quad_i
+set_location_assignment PIN_70 -to pitch_zero_i
+set_location_assignment PIN_68 -to pitch_sq_o
+set_location_assignment PIN_144 -to pb_i[0]
+set_location_assignment PIN_100 -to pb_i[1]
+set_location_assignment PIN_30 -to pb_i[2]
+set_location_assignment PIN_105 -to pb_i[3]
+set_location_assignment PIN_138 -to enc_0_i[0]
+set_location_assignment PIN_142 -to enc_0_i[1]
+set_location_assignment PIN_86 -to enc_1_i[0]
+set_location_assignment PIN_98 -to enc_1_i[1]
+set_location_assignment PIN_136 -to enc_2_i[0]
+set_location_assignment PIN_2 -to enc_2_i[1]
+set_location_assignment PIN_84 -to enc_3_i[0]
+set_location_assignment PIN_103 -to enc_3_i[1]
+set_location_assignment PIN_23 -to clk_50m_i
+set_location_assignment PIN_125 -to rstn_i
+set_location_assignment PIN_34 -to pb_i[4]
+set_location_assignment PIN_112 -to pb_i[5]
+set_location_assignment PIN_43 -to pb_i[6]
+set_location_assignment PIN_119 -to pb_i[7]
+set_location_assignment PIN_133 -to enc_4_i[0]
+set_location_assignment PIN_32 -to enc_4_i[1]
+set_location_assignment PIN_80 -to enc_5_i[0]
+set_location_assignment PIN_110 -to enc_5_i[1]
+set_location_assignment PIN_39 -to enc_6_i[1]
+set_location_assignment PIN_129 -to enc_6_i[0]
+set_location_assignment PIN_114 -to enc_7_i[1]
+set_location_assignment PIN_76 -to enc_7_i[0]
+set_location_assignment PIN_101 -to gpio_o[0]
+set_location_assignment PIN_99 -to gpio_o[1]
+set_location_assignment PIN_104 -to gpio_o[2]
+set_location_assignment PIN_28 -to gpio_o[3]
+set_location_assignment PIN_127 -to gpio_i[0]
+set_location_assignment PIN_121 -to gpio_i[1]
+set_location_assignment PIN_135 -to gpio_i[3]
+set_location_assignment PIN_132 -to gpio_i[2]
+set_location_assignment PIN_126 -to spdif_tx_h_o
+set_location_assignment PIN_74 -to midi_tx_o
+set_location_assignment PIN_31 -to midi_tx_n_o
+set_global_assignment -name USE_CONFIGURATION_DEVICE ON
+set_global_assignment -name STRATIX_CONFIGURATION_DEVICE EPCS16
+set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name RESERVE_ASDO_AFTER_CONFIGURATION "AS INPUT TRI-STATED"
+set_global_assignment -name CYCLONEIII_CONFIGURATION_DEVICE EPCS16
+set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
+set_global_assignment -name RESERVE_ALL_UNUSED_PINS_WEAK_PULLUP "AS INPUT TRI-STATED"
+set_global_assignment -name RESERVE_DATA0_AFTER_CONFIGURATION "COMPILER CONFIGURED"
+set_global_assignment -name RESERVE_DATA1_AFTER_CONFIGURATION "COMPILER CONFIGURED"
+set_global_assignment -name RESERVE_FLASH_NCE_AFTER_CONFIGURATION "COMPILER CONFIGURED"
+set_global_assignment -name RESERVE_DCLK_AFTER_CONFIGURATION "COMPILER CONFIGURED"
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
+set_global_assignment -name DEVICE_FILTER_PACKAGE TQFP
+set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 8
+set_global_assignment -name NOMINAL_CORE_SUPPLY_VOLTAGE 1.2V
+set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE SPEED
+set_global_assignment -name SYNTH_TIMING_DRIVEN_SYNTHESIS ON
+set_global_assignment -name OPTIMIZE_HOLD_TIMING "ALL PATHS"
+set_global_assignment -name FITTER_EFFORT "AUTO FIT"
+set_global_assignment -name MAX_RAM_BLOCKS_M4K 27
+set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC OFF
+set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_RETIMING OFF
+set_global_assignment -name PHYSICAL_SYNTHESIS_ASYNCHRONOUS_SIGNAL_PIPELINING OFF
+set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_DUPLICATION OFF
+set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC_FOR_AREA OFF
+set_global_assignment -name PHYSICAL_SYNTHESIS_EFFORT EXTRA
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name SEED 1
+set_global_assignment -name OPTIMIZE_MULTI_CORNER_TIMING ON
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to uart_rx_i
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to *_o*
+set_global_assignment -name ROUTER_TIMING_OPTIMIZATION_LEVEL MAXIMUM
+set_global_assignment -name PLACEMENT_EFFORT_MULTIPLIER 4
+set_global_assignment -name ROUTER_EFFORT_MULTIPLIER 4
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to gpio_i[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to gpio_i[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to gpio_i[2]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to gpio_i[3]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to pb_i[7]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to pb_i[6]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to pb_i[4]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to pb_i[3]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to pb_i[2]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to pb_i[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_6_i[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_7_i[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_0_i[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_0_i[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_1_i[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_1_i[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_2_i[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_3_i[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_2_i[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_4_i[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_3_i[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_4_i[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_5_i[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_5_i[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_6_i[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to enc_7_i[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to pb_i[5]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to pb_i[1]
+set_global_assignment -name FIT_ONLY_ONE_ATTEMPT OFF
+set_location_assignment PLL_1 -to "pll_spdif:pll_spdif|altpll:altpll_component|pll_spdif_altpll:auto_generated|pll1"
+set_global_assignment -name VERILOG_INPUT_VERSION SYSTEMVERILOG_2005
+set_global_assignment -name VERILOG_SHOW_LMF_MAPPING_MESSAGES OFF
+set_global_assignment -name OPTIMIZATION_MODE BALANCED
+set_global_assignment -name SYSTEMVERILOG_FILE hive_pkg.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/timing.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/lfsr.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/tuner/pulse_gen.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/pdi_zq.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/pdi_xor.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/lpf.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/lpf_multi.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/ltch.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/debounce.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/enc/pb_cond.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/enc/hive_reg_enc.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/enc/enc_dec.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/ddr_out_altera.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/ddr_in_altera.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/fifo_buf.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/ss_buf.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/volume/hive_reg_volume.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/tuner/led_tuner.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/tuner/hive_reg_tuner.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/spdif/spdif_tx.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/spdif/hive_reg_spdif.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/pitch/hive_reg_pitch.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/lcd/lcd.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/lcd/hive_reg_lcd.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/spi/spi_master.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/spi/hive_reg_spi.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/uart/uart_tx.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/uart/uart_rx.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/uart/hive_reg_uart_tx.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/uart/hive_reg_uart_rx.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/ram_dp.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/nco.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/lc_dpll.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/fifo.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/ddfs.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/common/bin_gray_bin.sv
+set_global_assignment -name VERILOG_FILE pll_core.v
+set_global_assignment -name VERILOG_FILE pll_spdif.v
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_reg_gpio.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_reg_error.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_reg_base.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_rbus.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_vector_ring.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_op_control.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_op_data.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../top/hive_top_theremin.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/rst_bridge.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/ram_dq.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/pipe.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/in_cond.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_tst_decode.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_stacks.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_stack_ring.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_pc_ring.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_main_mem.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/ram_dp_quad.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_level_ring.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_id_ring.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_data_ring.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_core.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_control_ring.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_alu_top.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_alu_mux.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_alu_multiply.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_alu_mul_shl.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_alu_logical.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../core/hive_alu_add_sub.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ep4ce6e22c8_demo_board.sv
+set_global_assignment -name SDC_FILE ep4ce6e22c8_demo_board.sdc
+set_global_assignment -name SYNCHRONIZER_IDENTIFICATION AUTO
+
+
+set_global_assignment -name ENABLE_OCT_DONE OFF
+set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
+set_global_assignment -name ENABLE_NCE_PIN OFF
+set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
+set_global_assignment -name SYSTEMVERILOG_FILE ../peripherals/uart/hive_reg_midi.sv
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

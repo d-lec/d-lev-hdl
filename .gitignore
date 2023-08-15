@@ -34,6 +34,7 @@ Thumbs.db
 **.dpi
 **.hb_info
 **.sig
+**.sld
 
 **/db/
 **/incremental_db/
@@ -52,4 +53,3 @@ Doc/*
 
 SimulationLib_quartus
 *.bak
-

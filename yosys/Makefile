@@ -40,7 +40,7 @@ YOSYS_SCRIPT= \
 
 all: out.v pll_core.v pll_spdif.v ${TARGET}.bit 
 
-$(TARGET).json: out.v $(MAKEFILE_LIST)
+$(TARGET).json: out.v pll_core.v pll_spdif.v $(MAKEFILE_LIST)
 	yosys -l $(TOP).log -p "${YOSYS_SCRIPT}"
 
 $(TARGET)_out.config: $(TARGET).json
@@ -58,8 +58,8 @@ pll_core.v: $(MAKEFILE_LIST)
 pll_spdif.v: $(MAKEFILE_LIST)
 	ecppll -n pll_spdif --clkin_name inclk0 --clkout0_name c0 -i 25 --clkout0 196.7 -f pll_spdif.v
 	
-out.v: pll_core.v pll_spdif.v $(SV_SOURCE) $(MAKEFILE_LIST)
-	sv2v -v -DECP5 -y ../Q20_v0.9.4 -y ../core -y ../top --top=${TOP} $(SV_SOURCE) -w ${CWD}/$@
+out.v: $(SV_SOURCE) $(MAKEFILE_LIST)
+	sv2v -v --top=${TOP} $(SV_SOURCE) -w ${CWD}/$@
 	
 $(TARGET).bit: $(TARGET)_out.config
 	ecppack --compress --svf ${TARGET}.svf $< $@

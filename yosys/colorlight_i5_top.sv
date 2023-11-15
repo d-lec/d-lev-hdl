@@ -24,7 +24,7 @@ import hive_params::*;
 module colorlight_i5_top
 	(
 	// clocks & resets
-	input			logic								clk_50m_i,					// clock
+	input			logic								clk_25m_i,					// clock
 	input			logic								rstn_i,						// async. reset, active low
 	//
 	input			logic	[3:0]						gpio_i,						// gpio inputs
@@ -98,7 +98,7 @@ module colorlight_i5_top
 	// spdif pll
 	pll_spdif  pll_spdif 
 	(
-	.inclk0				( clk_50m_i ),
+	.inclk0				( clk_25m_i ),
 	.c0					( clk_spdif )
 	);
 
@@ -106,7 +106,7 @@ module colorlight_i5_top
 	// core pll
 	pll_core  pll_core
 	(
-	.inclk0				( clk_50m_i ),
+	.inclk0				( clk_25m_i ),
 	.c0					( clk_core )
 	);
 	

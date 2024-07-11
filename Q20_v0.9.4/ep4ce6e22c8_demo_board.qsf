@@ -82,10 +82,10 @@ set_location_assignment PIN_73 -to lcd_data_o[0]
 set_location_assignment PIN_83 -to lcd_data_o[1]
 set_location_assignment PIN_75 -to lcd_data_o[2]
 set_location_assignment PIN_77 -to lcd_data_o[3]
-set_location_assignment PIN_113 -to tuner_oe_o
-set_location_assignment PIN_111 -to tuner_le_o
+set_location_assignment PIN_115 -to tuner_oe_o
+set_location_assignment PIN_113 -to tuner_le_o
 set_location_assignment PIN_106 -to tuner_scl_o
-set_location_assignment PIN_115 -to tuner_sda_o
+set_location_assignment PIN_111 -to tuner_sda_o
 set_location_assignment PIN_50 -to volume_sq_o
 set_location_assignment PIN_52 -to volume_zero_i
 set_location_assignment PIN_46 -to volume_quad_i

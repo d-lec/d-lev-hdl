@@ -98,13 +98,13 @@ package hive_params;
 	// DPLL params
 	// pitch axis
 	parameter	real	P_LC_FREQ		= 1300000;	// lc res. frequency (1mH)
-	parameter	real	P_LC_Q			= 100;		// lc res. quality factor (loop BW)
+	parameter	real	P_LC_Q			= 10;		// lc res. quality factor (loop BW)
 	parameter			P_FREQ_W			= 25;			// nco freq width (loop BW)
 	parameter			P_LSV				= 0;			// LSb's constant value, 0 to disable
 	parameter			P_LPF_SHR		= 15;			// LPF right shift (corner freq)
 	// volume axis
 	parameter	real	V_LC_FREQ		= 900000;	// lc res. frequency (2mH)
-	parameter	real	V_LC_Q			= 100;		// lc res. quality factor (loop BW)
+	parameter	real	V_LC_Q			= 10;		// lc res. quality factor (loop BW)
 	parameter			V_FREQ_W			= 25;			// nco freq width (loop BW)
 	parameter			V_LSV				= 0;			// LSb's constant value, 0 to disable
 	parameter			V_LPF_SHR		= 15;			// LPF right shift (corner freq)
